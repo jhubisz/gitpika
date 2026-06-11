@@ -1,0 +1,10 @@
+---
+description: Never commit produced code without explicit user request
+alwaysApply: true
+---
+
+# No Git Commits
+
+Do not create git commits in this repository. After producing or editing code, leave all changes uncommitted in the working tree.
+
+Only run `git commit` (or `git add` for the purpose of committing) if the user explicitly asks for a commit in their message.
