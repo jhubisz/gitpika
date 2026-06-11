@@ -4,17 +4,20 @@ use std::path::Path;
 use anyhow::Result;
 
 use crate::git::commands;
-use crate::models::FileStatus;
+use crate::models::{DiffMode, FileStatus};
 
 /// Produce the diff text to display for a file from the changed files list.
-pub fn diff_for_file(root: &Path, file: &FileStatus) -> Result<String> {
+pub fn diff_for_file(root: &Path, file: &FileStatus, mode: DiffMode) -> Result<String> {
+    let full = mode == DiffMode::FullFile;
+
     if file.untracked {
+        // The synthetic untracked diff is already the full file.
         return Ok(untracked_diff(root, &file.path));
     }
 
     if file.staged && file.unstaged {
-        let staged = commands::diff_staged(root, &file.path)?;
-        let unstaged = commands::diff_unstaged(root, &file.path)?;
+        let staged = commands::diff_staged(root, &file.path, full)?;
+        let unstaged = commands::diff_unstaged(root, &file.path, full)?;
         let mut out = String::new();
         if !staged.trim().is_empty() {
             out.push_str("== Staged ==\n");
@@ -31,9 +34,9 @@ pub fn diff_for_file(root: &Path, file: &FileStatus) -> Result<String> {
     }
 
     let diff = if file.staged {
-        commands::diff_staged(root, &file.path)?
+        commands::diff_staged(root, &file.path, full)?
     } else {
-        commands::diff_unstaged(root, &file.path)?
+        commands::diff_unstaged(root, &file.path, full)?
     };
 
     if diff.trim().is_empty() {

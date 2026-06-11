@@ -65,10 +65,21 @@ pub fn log_raw(root: &Path, limit: usize) -> Result<String> {
     )
 }
 
-pub fn diff_unstaged(root: &Path, path: &str) -> Result<String> {
-    run_git(root, &["diff", "--", path])
+/// Context lines large enough to make `git diff` emit the entire file.
+const FULL_CONTEXT: &str = "-U999999";
+
+pub fn diff_unstaged(root: &Path, path: &str, full_context: bool) -> Result<String> {
+    if full_context {
+        run_git(root, &["diff", FULL_CONTEXT, "--", path])
+    } else {
+        run_git(root, &["diff", "--", path])
+    }
 }
 
-pub fn diff_staged(root: &Path, path: &str) -> Result<String> {
-    run_git(root, &["diff", "--cached", "--", path])
+pub fn diff_staged(root: &Path, path: &str, full_context: bool) -> Result<String> {
+    if full_context {
+        run_git(root, &["diff", "--cached", FULL_CONTEXT, "--", path])
+    } else {
+        run_git(root, &["diff", "--cached", "--", path])
+    }
 }

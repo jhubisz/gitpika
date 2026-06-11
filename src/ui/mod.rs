@@ -41,7 +41,7 @@ pub fn draw(frame: &mut Frame, app: &mut App) {
         Span::raw(" @ "),
         Span::styled(head, Style::default().fg(Color::Yellow)),
         Span::styled(
-            "   q quit | r refresh | Tab panel | Up/Down or w/s move",
+            "   q quit | r refresh | Tab panel | Up/Down or w/s move | f diff view",
             Style::default().fg(Color::DarkGray),
         ),
     ];
@@ -72,6 +72,7 @@ pub fn draw(frame: &mut Frame, app: &mut App) {
         layout.diff,
         &app.diff_text,
         app.diff_scroll,
+        app.diff_mode,
         app.active_panel == Panel::Diff,
     );
 }

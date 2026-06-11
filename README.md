@@ -48,6 +48,8 @@ git pika
 | `r` | Refresh repository state |
 | `Tab` / `Ctrl+Tab` or `Shift+Tab` | Cycle active panel forward / backward |
 | `↑` / `↓` or `w` / `s` | Move selection in the active panel / scroll the diff |
+| `Shift+↑` / `Shift+↓` or `W` / `S` | Always scroll the diff, regardless of active panel |
+| `f` | Toggle diff view: hunks only / full file with inline changes |
 | Mouse wheel | Scroll the panel under the cursor |
 
 Selecting a file in the changed files panel instantly shows its diff. Untracked files are shown as an "all lines added" preview.
