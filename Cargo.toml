@@ -2,6 +2,13 @@
 name = "git-pika"
 version = "0.1.0"
 edition = "2024"
+description = "A fast little Git workbench for your terminal"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/jhubisz/GitPika"
+readme = "README.md"
+keywords = ["git", "tui", "terminal", "diff"]
+categories = ["command-line-utilities", "development-tools"]
+exclude = ["assets/", ".cursor/"]
 
 [dependencies]
 anyhow = "1.0.102"
