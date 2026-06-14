@@ -1,8 +1,8 @@
+use ratatui::Frame;
 use ratatui::layout::Rect;
 use ratatui::style::{Color, Modifier, Style};
 use ratatui::text::{Line, Span};
 use ratatui::widgets::{Block, Borders, Paragraph};
-use ratatui::Frame;
 
 use crate::models::DiffMode;
 
@@ -230,7 +230,10 @@ mod tests {
 
     #[test]
     fn parses_hunk_header_numbers() {
-        assert_eq!(parse_hunk_header("@@ -12,8 +14,10 @@ fn main() {"), Some((12, 14)));
+        assert_eq!(
+            parse_hunk_header("@@ -12,8 +14,10 @@ fn main() {"),
+            Some((12, 14))
+        );
         assert_eq!(parse_hunk_header("@@ -5 +5,3 @@"), Some((5, 5)));
         assert_eq!(parse_hunk_header("@@ garbage @@"), None);
     }
@@ -238,9 +241,6 @@ mod tests {
     #[test]
     fn hunk_subject_does_not_confuse_parser() {
         // Trailing context contains -/+ tokens; only the first of each counts.
-        assert_eq!(
-            parse_hunk_header("@@ -1,2 +3,4 @@ a -b +c"),
-            Some((1, 3))
-        );
+        assert_eq!(parse_hunk_header("@@ -1,2 +3,4 @@ a -b +c"), Some((1, 3)));
     }
 }

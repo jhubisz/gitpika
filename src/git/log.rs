@@ -100,10 +100,7 @@ mod tests {
             "5 weeks ago",
         ]);
         let c = &parse_log(&line)[0];
-        assert_eq!(
-            c.refs,
-            vec!["HEAD -> main", "origin/main", "tag: v1.0"]
-        );
+        assert_eq!(c.refs, vec!["HEAD -> main", "origin/main", "tag: v1.0"]);
         assert!(c.parents.is_empty());
     }
 

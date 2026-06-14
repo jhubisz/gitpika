@@ -92,7 +92,11 @@ impl App {
             return;
         };
         // A wheel tick conventionally scrolls a few lines of text.
-        let delta = if panel == Panel::Diff { delta * 3 } else { delta };
+        let delta = if panel == Panel::Diff {
+            delta * 3
+        } else {
+            delta
+        };
         self.scroll_panel(panel, delta);
     }
 
@@ -134,13 +138,11 @@ impl App {
         };
         match panel {
             Panel::Graph => {
-                self.graph_selected =
-                    step(self.graph_selected, delta, snapshot.commits.len());
+                self.graph_selected = step(self.graph_selected, delta, snapshot.commits.len());
             }
             Panel::Files => {
                 let before = self.files_selected;
-                self.files_selected =
-                    step(self.files_selected, delta, snapshot.files.len());
+                self.files_selected = step(self.files_selected, delta, snapshot.files.len());
                 if self.files_selected != before {
                     self.diff_scroll = 0;
                     self.load_diff();
@@ -176,11 +178,7 @@ impl App {
 }
 
 fn clamp(index: usize, len: usize) -> usize {
-    if len == 0 {
-        0
-    } else {
-        index.min(len - 1)
-    }
+    if len == 0 { 0 } else { index.min(len - 1) }
 }
 
 fn step(index: usize, delta: i64, len: usize) -> usize {

@@ -6,20 +6,7 @@ This first version is **read-only**: it never stages, commits, checks out, or ot
 
 ## Layout
 
-```
-┌─────────────────────────────┬────────────────────────────┐
-│ Commits                     │ Changed files              │
-│                             │                            │
-│ * a1b2c3d (HEAD -> main) …  │  M src/foo.rs              │
-│ * e4f5g6h …                 │  A src/bar.rs              │
-│ * 99aa88b …                 │ ?? scratch/test.rs         │
-│ * 123abcd …                 ├────────────────────────────┤
-│                             │ Diff                       │
-│                             │                            │
-│                             │ - old line                 │
-│                             │ + new line                 │
-└─────────────────────────────┴────────────────────────────┘
-```
+![GitPika screenshot](docs/screenshot.png)
 
 ## Build and run
 

@@ -3,11 +3,11 @@ pub mod files_panel;
 pub mod graph_panel;
 pub mod layout;
 
+use ratatui::Frame;
 use ratatui::layout::Rect;
 use ratatui::style::{Color, Modifier, Style};
 use ratatui::text::{Line, Span};
 use ratatui::widgets::Paragraph;
-use ratatui::Frame;
 
 use crate::app::{App, Panel};
 
@@ -113,8 +113,8 @@ fn draw_error_screen(frame: &mut Frame, app: &App) {
 mod quirk_test {
     use super::*;
     use crate::input::Action;
-    use ratatui::backend::TestBackend;
     use ratatui::Terminal;
+    use ratatui::backend::TestBackend;
 
     #[test]
     fn tab_does_not_move_content() {
@@ -153,6 +153,10 @@ mod quirk_test {
                 after[i]
             );
         }
-        assert!(diffs.is_empty(), "{} cells changed symbol after Tab", diffs.len());
+        assert!(
+            diffs.is_empty(),
+            "{} cells changed symbol after Tab",
+            diffs.len()
+        );
     }
 }

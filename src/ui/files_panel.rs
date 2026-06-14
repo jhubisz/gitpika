@@ -1,18 +1,12 @@
+use ratatui::Frame;
 use ratatui::layout::Rect;
 use ratatui::style::{Color, Modifier, Style};
 use ratatui::text::{Line, Span};
 use ratatui::widgets::{Block, Borders, List, ListItem, ListState};
-use ratatui::Frame;
 
 use crate::models::{FileStatus, GitStatusCode};
 
-pub fn render(
-    frame: &mut Frame,
-    area: Rect,
-    files: &[FileStatus],
-    selected: usize,
-    active: bool,
-) {
+pub fn render(frame: &mut Frame, area: Rect, files: &[FileStatus], selected: usize, active: bool) {
     let border_style = if active {
         Style::default().fg(Color::Cyan)
     } else {

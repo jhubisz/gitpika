@@ -18,13 +18,11 @@ fn parse_line(line: &str) -> Option<FileStatus> {
     let index_status = GitStatusCode::from_char(x);
     let worktree_status = GitStatusCode::from_char(y);
 
-    let (old_path, path) = if matches!(
-        index_status,
-        GitStatusCode::Renamed | GitStatusCode::Copied
-    ) || matches!(
-        worktree_status,
-        GitStatusCode::Renamed | GitStatusCode::Copied
-    ) {
+    let (old_path, path) = if matches!(index_status, GitStatusCode::Renamed | GitStatusCode::Copied)
+        || matches!(
+            worktree_status,
+            GitStatusCode::Renamed | GitStatusCode::Copied
+        ) {
         match rest.split_once(" -> ") {
             Some((old, new)) => (Some(unquote(old)), unquote(new)),
             None => (None, unquote(rest)),
@@ -34,8 +32,7 @@ fn parse_line(line: &str) -> Option<FileStatus> {
     };
 
     let untracked = x == '?' && y == '?';
-    let conflicted =
-        x == 'U' || y == 'U' || (x == 'A' && y == 'A') || (x == 'D' && y == 'D');
+    let conflicted = x == 'U' || y == 'U' || (x == 'A' && y == 'A') || (x == 'D' && y == 'D');
     let staged = !untracked && !conflicted && !matches!(x, ' ' | '?' | '!');
     let unstaged = !untracked && !conflicted && !matches!(y, ' ' | '?' | '!');
 
