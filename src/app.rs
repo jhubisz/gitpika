@@ -4,7 +4,7 @@ use ratatui::layout::Position;
 
 use crate::git;
 use crate::input::Action;
-use crate::models::RepoSnapshot;
+use crate::models::{DiffMode, RepoSnapshot};
 use crate::ui::layout::AppLayout;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -40,6 +40,7 @@ pub struct App {
     pub files_selected: usize,
     pub diff_scroll: u16,
     pub diff_text: String,
+    pub diff_mode: DiffMode,
     pub error: Option<String>,
     pub should_quit: bool,
     /// Panel rectangles from the most recent draw, used for mouse hit-testing.
@@ -56,6 +57,7 @@ impl App {
             files_selected: 0,
             diff_scroll: 0,
             diff_text: String::new(),
+            diff_mode: DiffMode::Hunks,
             error: None,
             should_quit: false,
             layout: None,
@@ -72,6 +74,13 @@ impl App {
             Action::PrevPanel => self.active_panel = self.active_panel.prev(),
             Action::Up => self.scroll_panel(self.active_panel, -1),
             Action::Down => self.scroll_panel(self.active_panel, 1),
+            Action::DiffUp => self.scroll_panel(Panel::Diff, -1),
+            Action::DiffDown => self.scroll_panel(Panel::Diff, 1),
+            Action::ToggleDiffMode => {
+                self.diff_mode = self.diff_mode.toggled();
+                self.diff_scroll = 0;
+                self.load_diff();
+            }
             Action::None => {}
         }
     }
@@ -138,7 +147,8 @@ impl App {
                 }
             }
             Panel::Diff => {
-                let max = self.diff_text.lines().count().saturating_sub(1) as i64;
+                let rendered = crate::ui::diff_panel::rendered_line_count(&self.diff_text);
+                let max = rendered.saturating_sub(1) as i64;
                 let new = (self.diff_scroll as i64 + delta).clamp(0, max.max(0));
                 self.diff_scroll = new as u16;
             }
@@ -155,7 +165,7 @@ impl App {
             self.diff_text = String::from("(no changed files)");
             return;
         };
-        match git::diff::diff_for_file(&snapshot.repo.root, file) {
+        match git::diff::diff_for_file(&snapshot.repo.root, file, self.diff_mode) {
             Ok(text) => self.diff_text = text,
             Err(err) => {
                 self.diff_text.clear();

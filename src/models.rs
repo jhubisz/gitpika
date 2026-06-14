@@ -1,5 +1,30 @@
 use std::path::PathBuf;
 
+/// How the diff panel presents changes.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum DiffMode {
+    /// Only changed hunks with a few lines of context (git default).
+    Hunks,
+    /// The whole file with inline +/- lines (unlimited context).
+    FullFile,
+}
+
+impl DiffMode {
+    pub fn toggled(self) -> Self {
+        match self {
+            DiffMode::Hunks => DiffMode::FullFile,
+            DiffMode::FullFile => DiffMode::Hunks,
+        }
+    }
+
+    pub fn label(self) -> &'static str {
+        match self {
+            DiffMode::Hunks => "hunks",
+            DiffMode::FullFile => "full file",
+        }
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct RepoInfo {
     pub root: PathBuf,
